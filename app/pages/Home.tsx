@@ -1,7 +1,8 @@
-/* eslint-disable react/jsx-key */
 import { useState } from "react";
 import { Platform, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Button } from "../components/Button";
+import { SkillCard } from "../components/SkillCard";
 
 interface SkillFormat{
     id: number
@@ -36,25 +37,14 @@ export function Home(){
       onChangeText={setNewSkill}
       />
 
-        <TouchableOpacity 
-        style={styles.button} 
-        activeOpacity={0.5}
-        onPress={handleAddNewSkill}
-        >
+        <Button title="adicionar" onPress={handleAddNewSkill}/>
 
-        <text style={styles.buttonText}
-        >
-            Add
-        </text>
-        </TouchableOpacity>
 
-            {
+        {
             mySkills.map(skill => (
-                <TouchableOpacity style={styles.buttonSkill}>
-                <Text style={styles.buttonText}>{skill.name}</Text>
-                </TouchableOpacity>
+            <SkillCard />
             ))
-            }
+        }
 
     {/* <Text style={styles.textFooter}>{newSkill}</Text> */}
     </SafeAreaView>
@@ -87,20 +77,6 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         alignItems: 'center',
         marginTop: 14
-    },
-        buttonText: {
-        color: "#fff",
-        fontSize: 17,
-        fontWeight: 'bold'
-    },
-        buttonSkill: {
-        backgroundColor: '#1f1e25',
-        color: "#fff",
-        fontSize: 14,
-        marginTop: 12,
-        padding: 12,
-        alignItems: 'center',
-        borderRadius: 7
     },
         textFooter:{
          justifyContent: 'flex-end',
