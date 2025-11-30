@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Platform, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView} from "react-native-safe-area-context";
 import { Button } from "../components/Button";
 import { SkillCard } from "../components/SkillCard";
 
@@ -37,12 +37,12 @@ export function Home(){
       onChangeText={setNewSkill}
       />
 
-        <Button title="adicionar" onPress={handleAddNewSkill}/>
-
+        
+        <Button title="Adicionar" onPress={handleAddNewSkill}/>
 
         {
             mySkills.map(skill => (
-            <SkillCard />
+            <SkillCard key={skill.id} skill ={skill.name} />
             ))
         }
 
