@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Platform, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { FlatList, Platform, ScrollView, StyleSheet, Text, TextInput } from "react-native";
 import { SafeAreaView} from "react-native-safe-area-context";
 import { Button } from "../components/Button";
 import { SkillCard } from "../components/SkillCard";
 
 interface SkillFormat{
-    id: number
+    id: string
     name: string
 }
 
@@ -16,7 +16,7 @@ export function Home(){
 
     function handleAddNewSkill(){
         const data = {
-            id: new Date().getTime(),
+            id: String(new Date().getTime()),
             name: newSkill
         }
 
@@ -38,13 +38,29 @@ export function Home(){
       />
 
         
-        <Button title="Adicionar" onPress={handleAddNewSkill}/>
+        <Button title="Adicionar" onPress={handleAddNewSkill} activeOpacity={0.1}/>
 
+        {/* {
+            mySkills.map(skill => (
+            <SkillCard key={skill.id} skill ={skill.name} activeOpacity={1} />
+            ))
+        } */}
+
+        {/* <ScrollView>
         {
             mySkills.map(skill => (
-            <SkillCard key={skill.id} skill ={skill.name} />
+            <SkillCard key={skill.id} skill ={skill.name} activeOpacity={1} />
             ))
         }
+        </ScrollView> */}
+
+        <FlatList
+        data={mySkills}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => (
+        <SkillCard key={item.id} skill ={item.name} activeOpacity={1} />   
+        )}
+        />
 
     {/* <Text style={styles.textFooter}>{newSkill}</Text> */}
     </SafeAreaView>
