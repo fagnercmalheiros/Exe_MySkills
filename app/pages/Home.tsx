@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { FlatList, Platform, ScrollView, StyleSheet, Text, TextInput } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, Platform, StyleSheet, Text, TextInput } from "react-native";
 import { SafeAreaView} from "react-native-safe-area-context";
 import { Button } from "../components/Button";
 import { SkillCard } from "../components/SkillCard";
@@ -13,6 +13,28 @@ export function Home(){
 
     const [newSkill, setNewSkill] = useState('')
     const [mySkills, setMySkills] = useState<SkillFormat[]>([])
+    const [greetings, setGreeting] = useState('')
+
+    //1º a função e 2º a dependência
+    // useEffect(() => {
+    //     console.log("useEffect executado!")
+    // }, [mySkills])
+
+    useEffect(() => {
+        const currentHour = new Date().getHours()
+        //const currentHour = 22
+        //console.log(currentHour)
+
+        if(currentHour <12){
+            setGreeting('Good Morning!')
+        }
+        else if(currentHour >= 12 && currentHour < 18){
+            setGreeting('Good Afternoon!')
+        }
+        else {
+            setGreeting('Good Night!')
+        }
+    }, [])
 
     function handleAddNewSkill(){
         const data = {
@@ -20,8 +42,15 @@ export function Home(){
             name: newSkill
         }
 
+        //['programa', 'react native', 'proximo item']
         //setMySkills(oldstate => [...oldstate, data])
         setMySkills([...mySkills, data])
+    }
+
+    function handleRemoveSkill(id: string){
+        setMySkills(oldState => oldState.filter(
+            skill => skill.id !== id
+        ))
     }
 
     return(
@@ -29,12 +58,17 @@ export function Home(){
       <Text style={styles.title}>
         Welcome, Aluno
         </Text>
+        <Text style={styles.greetings}>
+            {greetings}
+        </Text>
 
       <TextInput 
       style={styles.input}
       placeholder="Write your skill"
       placeholderTextColor='#555'
       onChangeText={setNewSkill}
+    //  onChangeText={handleInputChange} // adiciona todo o texto no log em tempo real
+
       />
 
         
@@ -58,7 +92,12 @@ export function Home(){
         data={mySkills}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-        <SkillCard key={item.id} skill ={item.name} activeOpacity={1} />   
+        <SkillCard 
+        key={item.id} 
+        skill ={item.name} 
+        onPress={() => handleRemoveSkill(item.id)} 
+        activeOpacity={1} 
+        />   
         )}
         />
 
@@ -67,7 +106,7 @@ export function Home(){
     )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
       container: {
       flex: 1,
       backgroundColor: '#121015',
@@ -78,6 +117,9 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 24,
         fontWeight: 'bold'
+    },
+    greetings:{
+        color: "#fff"
     },
         input: {
         backgroundColor: '#1f1e25',
